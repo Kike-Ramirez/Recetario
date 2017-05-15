@@ -147,6 +147,9 @@ void setup() {
 
   recetas.add(receta);  
 
+  // Definimos dibujar las imágenes usando su punto central como referencia o "Anchor Point"
+  imageMode(CENTER);
+  
   // Finalizamos la función setup(), ya tenemos la lista de recetas creadas y con toda la información
 }
 
@@ -182,6 +185,8 @@ void draw() {
 // La función mousePressed() se ejecuta cada vez que pulso el ratón
 void mousePressed()
 {
+  
+  saveFrame();
 
   // Creamos esta variable para detectar si hay alguna receta seleccionada
   boolean isSelectedAny = false;

@@ -70,11 +70,12 @@ class Receta
     playing = false;
     
     int id = id_;
-    posXidle = (id%3) * width/3;
-    posYidle = ((id - id%3) / 3) * height/3;
     
-    posXSelected = 0;
-    posYSelected = 0;
+    posXidle = (0.5 + id%3) * width/3;
+    posYidle = (0.5 + (id - id%3) / 3) * height/3;
+    
+    posXSelected = width/2;
+    posYSelected = height/2;
     
     posXtg = posXidle;
     posYtg = posYidle;
@@ -221,10 +222,16 @@ class Receta
     float speed = 0.4;
     
     posX = posX + (posXtg - posX) * speed;
+    if (posX >= 0.95 * posXtg) posX = posXtg;
+
     posY = posY + (posYtg - posY) * speed;
+    if (posY >= 0.95 * posYtg) posY = posYtg;
   
     actWidth = actWidth + (widthTg - actWidth) * speed;
+    if (actWidth >= 0.95 * widthTg) actWidth = widthTg;
+
     actHeight = actHeight + (heightTg - actHeight) * speed;
+    if (actHeight >= 0.95 * heightTg) actHeight = heightTg;
     
   }
   
@@ -234,6 +241,10 @@ class Receta
     
       canvas.beginDraw();
       canvas.background(colorBackground);
+      canvas.stroke(colorFont);
+      canvas.strokeWeight(3);
+      canvas.noFill();
+      canvas.rect(0,0,width,height);
       canvas.tint(255);
 
       float imgAutorHeight = 0.4 * height;
@@ -276,6 +287,10 @@ class Receta
     
       canvas.beginDraw();
       canvas.background(colorBackground);
+      canvas.stroke(colorFont);
+      canvas.strokeWeight(3);
+      canvas.noFill();
+      canvas.rect(0,0,width,height);
       canvas.textFont(fuente);
       canvas.fill(255);
       canvas.textSize(fontSizeBig);
@@ -293,18 +308,16 @@ class Receta
   void mPressed()
   {
     
-    if ((!selected) && (mouseX > posX) && (mouseX < posX + actWidth) && (mouseY > posY) && (mouseY < posY + actHeight)) {
+    needsDrawing = true;
+
+    if ((!selected) && (mouseX > posX - actWidth * 0.5) && (mouseX < posX + actWidth * 0.5) && (mouseY > posY - actHeight * 0.5) && (mouseY < posY + actHeight * 0.5)) {
     
       setSelected();
-      needsDrawing = true;
       
     }
     
     else {
-      
-      
-      needsDrawing = true;
-      
+            
       if ((mouseX > 0.05 * width) && (mouseX < 0.15 * width) && (mouseY > 0.8 * height) && (mouseY < 0.9 * height)) 
       {
         if (!playing) audio.play();
